@@ -88,7 +88,39 @@ select * from dealer_n;
 -- charge) in each location
 
 create view earned as
-    select earn from dealer inner join sell s on dealer.id = s.dealer_id
+    select sum(amount) * dealer.charge, location
+    from (dealer inner join sell s on dealer.id = s.dealer_id) d,
+    group by (location)
+
+-- e. compute number of sales, average and total amount of all sales dealers
+-- made in each location
+
+create view sales as
+    select count(*), avg(amount), sum(amount) , location
+    from sell inner join dealer d on sell.dealer_id = d.id
+    group by (location);
+
+select * from sales;
+
+--f. compute number of sales, average and total amount of expenses in
+--each city clients made.
+create view clients as
+    select count(*) , avg(amount), sum(amount), city
+   from sell inner join client c on c.id = sell.client_id
+   group by(city);
+
+select * from clients;
+
+--g. find cities where total expenses more than total amount of sales in
+--locations
+
+
+
+
+
+
+
+
 
 
 
